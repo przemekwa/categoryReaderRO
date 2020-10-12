@@ -36,9 +36,17 @@ namespace categoryReaderRO
                 while (reader.Read())
                 {
                     var row = new Row();
+                    row.WUGR = new HashSet<string>();
+
+                    if (reader[1] == null)
+                    {
+                        continue;
+                    }
+
+                    row.WGR = reader[1].ToString();
                     row.Category = reader[3].ToString();
 
-                    if (rowList.Contains(row,))
+                    if (rowList.Contains(row))
                     {
                         rowList.TryGetValue(row, out Row actualRow);
                         SetValue(actualRow, reader);
@@ -59,8 +67,10 @@ namespace categoryReaderRO
                 actualRow.Id = Guid.NewGuid();
             }
 
-            actualRow.WGR = reader[1].ToString();
-            actualRow.WUGR = reader[2].ToString().Split(',').ToList();
+            foreach (var wugr in reader[2].ToString().Split(','))
+            {
+                actualRow.WUGR.Add(wugr);
+            }
 
             return actualRow;
         }
