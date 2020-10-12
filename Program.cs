@@ -20,7 +20,30 @@ namespace categoryReaderRO
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
             var model = ReadFile();
+            CreateScript(model);
 
+        }
+
+        private static void CreateScript(HashSet<Row> model)
+        {
+            using var fileStream = new StreamWriter(scriptFileName, false);
+
+            foreach (var item in model)
+            {
+                foreach (var item2 in item.WUGR)
+                {
+                    var sb = new StringBuilder();
+                    sb.Append("INSERT INTO dbo.[WebsiteCategories] (id_category,wgr,wugr,category) VALUES ");
+                    sb.Append("(");
+                    sb.Append($"'{Guid.NewGuid()}', ");
+                    sb.Append($"'{item.WGR}', ");
+                    sb.Append($"'{item2}', ");
+                    sb.Append($"N'{item.Category}'");
+                    sb.Append(");");
+
+                    fileStream.WriteLine(sb.ToString());
+                }
+            }
         }
 
         private static HashSet<Row> ReadFile()
