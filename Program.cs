@@ -10,7 +10,7 @@ namespace categoryReaderRO
 {
     class Program
     {
-        const string pathToFile = @"C:\Users\walkowskip\Downloads\test1.xlsx";
+        const string pathToFile = @"C:\Users\walkowskip\Downloads\Category tree v1.7.xlsx";
         const string scriptFileName = "categoryReaderRO_script.sql";
 
         static void Main(string[] args)
@@ -33,12 +33,12 @@ namespace categoryReaderRO
                 foreach (var item2 in item.WUGR)
                 {
                     var sb = new StringBuilder();
-                    sb.Append("INSERT INTO dbo.[WebsiteCategories] (id_category,wgr,wugr,category) VALUES ");
+                    sb.Append("INSERT INTO [SelgrosMainDB].dbo.[WebsiteCategories] (id_category,wgr,wugr,category) VALUES ");
                     sb.Append("(");
-                    sb.Append($"'{Guid.NewGuid()}', ");
-                    sb.Append($"'{item.WGR}', ");
-                    sb.Append($"'{item2}', ");
-                    sb.Append($"N'{item.Category}'");
+                    sb.Append($"''{Guid.NewGuid()}'', ");
+                    sb.Append($"''{item.WGR}'', ");
+                    sb.Append($"''{item2}'', ");
+                    sb.Append($"N''{item.Category}''");
                     sb.Append(");");
 
                     fileStream.WriteLine(sb.ToString());
@@ -92,7 +92,7 @@ namespace categoryReaderRO
 
             foreach (var wugr in reader[2].ToString().Split(','))
             {
-                actualRow.WUGR.Add(wugr);
+                actualRow.WUGR.Add(wugr.Trim());
             }
 
             return actualRow;
