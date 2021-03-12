@@ -13,7 +13,7 @@ namespace categoryReaderRO
         public string Category { get; internal set; }
         public Guid Id { get; internal set; }
         
-        public HashSet<string> WUGR { get; internal set; }
+        public HashSet<int> WUGR { get; internal set; }
         public string WGR { get; internal set; }
 
         public bool Equals([AllowNull] Row other)

@@ -33,7 +33,7 @@ namespace categoryReaderRO
                 foreach (var item2 in item.WUGR)
                 {
                     var sb = new StringBuilder();
-                    sb.Append("INSERT INTO [SelgrosMainDB].dbo.[WebsiteCategories] (id_category,wgr,wugr,category) VALUES ");
+                    sb.Append("INSERT INTO [SelgrosMainDB_NEW].dbo.[WebsiteCategories] (id_category,wgr,wugr,category) VALUES ");
                     sb.Append("(");
                     sb.Append($"''{Guid.NewGuid()}'', ");
                     sb.Append($"''{item.WGR}'', ");
@@ -59,7 +59,7 @@ namespace categoryReaderRO
                 while (reader.Read())
                 {
                     var row = new Row();
-                    row.WUGR = new HashSet<string>();
+                    row.WUGR = new HashSet<int>();
 
                     if (reader[1] == null)
                     {
@@ -90,9 +90,17 @@ namespace categoryReaderRO
                 actualRow.Id = Guid.NewGuid();
             }
 
-            foreach (var wugr in reader[2].ToString().Split(','))
+            foreach (var wugr in reader[2].ToString().Split(',', StringSplitOptions.RemoveEmptyEntries))
             {
-                actualRow.WUGR.Add(wugr.Trim());
+                if (int.TryParse(wugr.Trim(), out int result))
+                {
+                    actualRow.WUGR.Add(result);
+                }
+                else
+                {
+                    Console.WriteLine($"wugr {wugr} not well formatted. WGR: {actualRow.WGR}");
+                }
+
             }
 
             return actualRow;
